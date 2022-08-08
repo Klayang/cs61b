@@ -82,11 +82,7 @@ public class IntList {
 
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        IntList res = A;
-        while (res.rest != null)
-            res = res.rest;
-        res.rest = B;
-        return A;
+        
     }
 
     /**
