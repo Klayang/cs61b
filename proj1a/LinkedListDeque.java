@@ -1,9 +1,9 @@
 public class LinkedListDeque<T> {
-    private static class TNode<T>{
-        public T item;
-        public TNode pre;
-        public TNode next;
-        public TNode(T value){
+    private static class TNode<T> {
+        private T item;
+        private TNode pre;
+        private TNode next;
+        public TNode(T value) {
             item = value;
             pre = null;
             next = null;
@@ -11,13 +11,13 @@ public class LinkedListDeque<T> {
     }
     private int size;
     private TNode<T> sentinel;
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel = new TNode<>(null);
         size = 0;
         sentinel.pre = sentinel;
         sentinel.next = sentinel;
     }
-    public void addFirst(T item){
+    public void addFirst(T item) {
         TNode<T> node = new TNode<>(item);
         node.next = sentinel.next;
         node.pre = sentinel;
@@ -25,7 +25,7 @@ public class LinkedListDeque<T> {
         sentinel.next = node;
         size++;
     }
-    public void addLast(T item){
+    public void addLast(T item) {
         TNode<T> node = new TNode<>(item);
         node.next = sentinel;
         node.pre = sentinel.pre;
@@ -33,13 +33,13 @@ public class LinkedListDeque<T> {
         sentinel.pre = node;
         size++;
     }
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
-    public int size(){
+    public int size() {
         return size;
     }
-    public void printDeque(){
+    public void printDeque() {
         TNode n = sentinel.next;
         for (int i = 0; i < size; ++i) {
             System.out.print(n.item);
@@ -47,15 +47,17 @@ public class LinkedListDeque<T> {
             n = n.next;
         }
     }
-    public T removeFirst(){
+    public T removeFirst() {
+        assert size > 0;
         T valueOfFirst = (T)sentinel.next.item;
         sentinel.next.next.pre = sentinel;
         sentinel.next = sentinel.next.next;
         size--;
         return valueOfFirst;
     }
-    public T removeLast(){
-        T valueOfLast = (T)sentinel.pre.item;
+    public T removeLast() {
+        assert size > 0;
+        T valueOfLast = (T) sentinel.pre.item;
         sentinel.pre.pre.next = sentinel;
         sentinel.pre = sentinel.pre.pre;
         size--;
@@ -63,24 +65,18 @@ public class LinkedListDeque<T> {
     }
     public T get(int index){
         TNode<T> n = sentinel;
-        for (int i = 0; i <= index; ++i)
+        for (int i = 0; i <= index; ++i){
             n = n.next;
+        }
         return n.item;
     }
-    public T getRecursive(int index){
+    public T getRecursive(int index) {
         return getRecursive(index, sentinel.next);
     }
-    private T getRecursive(int index, TNode node){
-        if (index == 0) return (T)node.item;
+    private T getRecursive(int index, TNode node) {
+        if (index == 0) {
+            return (T) node.item;
+        }
         return getRecursive(index - 1, node.next);
-    }
-    public static void main(String[] args){
-        LinkedListDeque<Integer> linkedListDeque = new LinkedListDeque<>();
-        linkedListDeque.addLast(1);
-        for (int i = 10000; i > 1; --i)
-            linkedListDeque.addFirst(i);
-        linkedListDeque.removeFirst();
-        linkedListDeque.removeLast();
-        linkedListDeque.printDeque();
     }
 }
