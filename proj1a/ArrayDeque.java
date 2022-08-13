@@ -25,12 +25,16 @@ public class ArrayDeque<T> {
         head = (head + items.length - 1) % items.length;
         items[head] = item;
         size++;
-        if (size == items.length) resize(size * 2);
+        if (size == items.length) {
+            resize(size * 2);
+        }
     }
     public void addLast(T item) {
         items[(head + size) % items.length] = item;
         size++;
-        if (size == items.length) {resize(size * 2);}
+        if (size == items.length) {
+            resize(size * 2);
+        }
     }
     public boolean isEmpty() {
         return size == 0;
@@ -47,7 +51,9 @@ public class ArrayDeque<T> {
         }
     }
     public T removeFirst() {
-        assert size > 0;
+        if (size == 0) {
+            return null;
+        }
         T res = items[head];
         items[head] = null;
         head = (head + 1) % items.length;
@@ -56,7 +62,9 @@ public class ArrayDeque<T> {
         return res;
     }
     public T removeLast() {
-        assert size > 0;
+        if (size == 0) {
+            return null;
+        }
         T res = items[(head + size - 1) % items.length];
         items[(head + size - 1) % items.length] = null;
         size--;

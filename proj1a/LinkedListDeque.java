@@ -48,24 +48,26 @@ public class LinkedListDeque<T> {
         }
     }
     public T removeFirst() {
-        assert size > 0;
-        T valueOfFirst = (T)sentinel.next.item;
+        if (size == 0){
+            return null;
+        }
+        T valueOfFirst = (T) sentinel.next.item;
         sentinel.next.next.pre = sentinel;
         sentinel.next = sentinel.next.next;
         size--;
         return valueOfFirst;
     }
     public T removeLast() {
-        assert size > 0;
+        if (size == 0) return null;
         T valueOfLast = (T) sentinel.pre.item;
         sentinel.pre.pre.next = sentinel;
         sentinel.pre = sentinel.pre.pre;
         size--;
         return valueOfLast;
     }
-    public T get(int index){
+    public T get(int index) {
         TNode<T> n = sentinel;
-        for (int i = 0; i <= index; ++i){
+        for (int i = 0; i <= index; ++i) {
             n = n.next;
         }
         return n.item;
