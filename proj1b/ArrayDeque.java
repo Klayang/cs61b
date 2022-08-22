@@ -1,0 +1,92 @@
+
+public class ArrayDeque<T> implements Deque<T> {
+    private T[] items;
+    private int size;
+    private int head;
+    public ArrayDeque() {
+        size = 0;
+        head = 0;
+        items = (T[]) new Object[8];
+    }
+    private void resize(int capacity) {
+        T[] newItems = (T[]) new Object[capacity];
+
+        int firstHalf = items.length - head;
+        int secondHalf = size - firstHalf;
+        int newHead = head + newItems.length - items.length;
+
+        System.arraycopy(items, head, newItems, newHead, firstHalf);
+        System.arraycopy(items, 0, newItems, 0, secondHalf);
+
+        items = newItems;
+        head = newHead;
+    }
+    @Override
+    public void addFirst(T item) {
+        head = (head + items.length - 1) % items.length;
+        items[head] = item;
+        size++;
+        if (size == items.length) {
+            resize(size * 2);
+        }
+    }
+
+    @Override
+    public void addLast(T item) {
+        items[(head + size) % items.length] = item;
+        size++;
+        if (size == items.length) {
+            resize(size * 2);
+        }
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public void printDeque() {
+        int p = head;
+        for (int i = 0; i < size; ++i) {
+            System.out.print(items[p]);
+            System.out.print(' ');
+            p = (p + 1) % items.length;
+        }
+    }
+
+    @Override
+    public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
+        T res = items[head];
+        items[head] = null;
+        head = (head + 1) % items.length;
+        size--;
+        if (size < items.length / 4 && size > 10) {resize(items.length / 2);}
+        return res;
+    }
+
+    @Override
+    public T removeLast() {
+        if (size == 0) {
+            return null;
+        }
+        T res = items[(head + size - 1) % items.length];
+        items[(head + size - 1) % items.length] = null;
+        size--;
+        if (size < items.length / 4 && size > 10) {resize(items.length / 2);}
+        return res;
+    }
+
+    @Override
+    public T get(int index) {
+        return items[(head + index) % items.length];
+    }
+}
