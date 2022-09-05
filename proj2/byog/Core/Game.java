@@ -32,8 +32,15 @@ public class Game {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
-
-        Integer seed = Integer.parseInt(input);
+        int start = 0, end = 0;
+        for (int i = 0; i < input.length(); ++i) {
+            if (input.charAt(i) == 'N') start = i + 1;
+            else if (input.charAt(i) == 'S') {
+                end = i;
+                break;
+            }
+        }
+        Integer seed = Integer.parseInt(input.substring(start, end));
         WordGeneration wg = new WordGeneration(seed);
         return wg.world();
     }
