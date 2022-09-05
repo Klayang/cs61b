@@ -132,8 +132,13 @@ public class WordGeneration {
     }
 
     public static void main(String[] args) {
-        WordGeneration wg = new WordGeneration(43543);
-        TETile[][] world = wg.world();
+//        WordGeneration wg = new WordGeneration(4354);
+//        TETile[][] world = wg.world();
+//        TERenderer ter = new TERenderer();
+//        ter.initialize(80, 30);
+//        ter.renderFrame(world);
+        Game g = new Game();
+        TETile[][] world = g.playWithInputString("");
         TERenderer ter = new TERenderer();
         ter.initialize(80, 30);
         ter.renderFrame(world);
