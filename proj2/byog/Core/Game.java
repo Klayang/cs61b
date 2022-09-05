@@ -41,15 +41,17 @@ public class Game {
                 break;
             }
         }
-        if (start >= end || start < 0) {
+        try{
+            Integer seed = Integer.parseInt(input.substring(start, end));
+            WordGeneration wg = new WordGeneration(seed);
+            return wg.world();
+        }
+        catch (Exception e) {
             TETile[][] world = new TETile[80][30];
             for (int i = 0; i < 80; ++i)
                 for (int j = 0; j < 30; ++j)
                     world[i][j] = Tileset.NOTHING;
             return world;
         }
-        Integer seed = Integer.parseInt(input.substring(start, end));
-        WordGeneration wg = new WordGeneration(seed);
-        return wg.world();
     }
 }
