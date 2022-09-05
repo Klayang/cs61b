@@ -42,7 +42,7 @@ public class Game {
             }
         }
         try{
-            Integer seed = Integer.parseInt(input.substring(start, end));
+            Long seed = Long.parseLong(input.substring(start, end));
             WordGeneration wg = new WordGeneration(seed);
             return wg.world();
         }

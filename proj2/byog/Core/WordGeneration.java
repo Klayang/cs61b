@@ -23,7 +23,7 @@ public class WordGeneration {
     private TETile[][] world = new TETile[80][30];
     private Room[] rooms;
     private Hallway[] hallways;
-    public WordGeneration(int seed) {
+    public WordGeneration(long seed) {
         random = new Random(seed);
         numOfRooms = RandomUtils.uniform(random, smallestNumOfRooms, largestNumOfRooms);
         numOfHallways = numOfRooms - 1;
