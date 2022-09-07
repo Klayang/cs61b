@@ -99,12 +99,13 @@ public class Game {
         ter.initialize(WordGeneration.WIDTH, WordGeneration.HEIGHT);
         ter.renderFrame(world);
         while ((!UI.hasWonTheGame) && (!UI.hasPausedTheGame)){
-            int[] mousePressedPoint = UI.getMousePressedPoint();
             String info = null;
-            if (mousePressedPoint != null) {
-                int x = mousePressedPoint[0], y = mousePressedPoint[1];
-                info = world[x][y].description();
-            }
+//            int[] mousePressedPoint = UI.getMousePressedPoint();
+//            String info = null;
+//            if (mousePressedPoint != null) {
+//                int x = mousePressedPoint[0], y = mousePressedPoint[1];
+//                info = world[x][y].description();
+//            }
             UI.move(world);
             ter.renderFramePlusHeadInfo(world, info);
         }

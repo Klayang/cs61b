@@ -4,8 +4,8 @@ import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
 import edu.princeton.cs.algs4.StdDraw;
 
+//import java.awt.*;
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -88,10 +88,10 @@ public class UI {
         return res;
     }
 
-    public static int[] getMousePressedPoint() {
-        if (StdDraw.isMousePressed()) return new int[]{(int) StdDraw.mouseX(), (int) StdDraw.mouseY()};
-        return null;
-    }
+//    public static int[] getMousePressedPoint() {
+//        if (StdDraw.isMousePressed()) return new int[]{(int) StdDraw.mouseX(), (int) StdDraw.mouseY()};
+//        return null;
+//    }
 
     public static void move(TETile[][] world) throws IOException {
         if (StdDraw.hasNextKeyTyped()) {
