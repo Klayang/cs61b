@@ -9,12 +9,14 @@ import java.util.Random;
 
 public class WordGeneration {
     // The size of the world and random seed cannot be changed
-    private static final int WIDTH = 80;
-    private static final int HEIGHT = 30;
+    protected static final int WIDTH = 80;
+    protected static final int HEIGHT = 30;
+    protected int initialXOfPlayer;
+    protected int initialYOfPlayer;
     private static final int ZERO = 0;
-    private static final int smallestLengthOfSide = 1;
+    private static final int smallestLengthOfSide = 2;
     private static final int largestLengthOfSide = 10;
-    private static final int smallestNumOfRooms = 3;
+    private static final int smallestNumOfRooms = 7;
     private static final int largestNumOfRooms = 10;
     private final int numOfRooms;
     private final int numOfHallways;
@@ -33,6 +35,8 @@ public class WordGeneration {
         buildRooms();
         buildHallways();
         buildWalls();
+        buildCharacter();
+        buildUnlockedDoor();
     }
 
     public TETile[][] world() {
@@ -110,6 +114,26 @@ public class WordGeneration {
         mark(x + w, y - 1, x - 1, y - 1, Tileset.WALL); // down wall
     }
 
+    private void buildCharacter() {
+        int x = 0, y = 0;
+        while (!world[x][y].equals(Tileset.FLOOR)) {
+            x = RandomUtils.uniform(random, ZERO + 1, WIDTH);
+            y = RandomUtils.uniform(random, ZERO + 1, HEIGHT);
+        }
+        initialXOfPlayer = x;
+        initialYOfPlayer = y;
+        world[x][y] = Tileset.PLAYER;
+    }
+
+    private void buildUnlockedDoor() {
+        int x = 0, y = 0;
+        while (!world[x][y].equals(Tileset.WALL)) {
+            x = RandomUtils.uniform(random, ZERO + 1, WIDTH);
+            y = RandomUtils.uniform(random, ZERO + 1, HEIGHT);
+        }
+        world[x][y] = Tileset.UNLOCKED_DOOR;
+    }
+
 
     /* mark a certain area to given symbol */
     private void mark(int startX, int startY, int targetX, int targetY, TETile pattern) {
@@ -132,13 +156,8 @@ public class WordGeneration {
     }
 
     public static void main(String[] args) {
-//        WordGeneration wg = new WordGeneration(4354);
-//        TETile[][] world = wg.world();
-//        TERenderer ter = new TERenderer();
-//        ter.initialize(80, 30);
-//        ter.renderFrame(world);
-        Game g = new Game();
-        TETile[][] world = g.playWithInputString("");
+        WordGeneration wg = new WordGeneration(3454);
+        TETile[][] world = wg.world();
         TERenderer ter = new TERenderer();
         ter.initialize(80, 30);
         ter.renderFrame(world);
