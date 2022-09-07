@@ -63,6 +63,7 @@ public class Game {
                 Long seed = Long.parseLong(input.substring(1, i)); ++i;
                 WordGeneration wg = new WordGeneration(seed);
                 world = wg.world();
+                UI.xOfPlayer = wg.initialXOfPlayer; UI.yOfPlayer = wg.initialYOfPlayer;
             }
             else if (input.charAt(0) == 'l' || input.charAt(0) == 'L')
                 world = getSavedWord();
