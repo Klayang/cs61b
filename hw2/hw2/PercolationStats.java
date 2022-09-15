@@ -15,6 +15,8 @@ public class PercolationStats {
      * @param pf
      */
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) throw new IllegalArgumentException();
+
         probList = new double[T];
         mean = -1; stdDev = -1;
         experimentTimes = T;
@@ -68,11 +70,5 @@ public class PercolationStats {
     public double confidenceHigh() {
         double res = mean() + 1.96 * stddev() / Math.sqrt(experimentTimes);
         return res;
-    }
-
-    public static void main(String[] args) {
-        PercolationFactory pf = new PercolationFactory();
-        PercolationStats ps = new PercolationStats(500, 1000, pf);
-        System.out.println(ps.mean());
     }
 }
