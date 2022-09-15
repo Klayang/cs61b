@@ -36,6 +36,7 @@ public class Percolation {
     public void open(int row, int col) {
         // exception handle
         if (row < 0 || row >= N || col < 0 || col >= N) throw new IndexOutOfBoundsException();
+        if (open[row][col]) return;
         // open the prescribed site
         open[row][col] = true;
         connect(row, col);
