@@ -82,6 +82,6 @@ public class Percolation
     {
         Percolation per = new Percolation(3);
         per.open(1, 3);per.open(2, 3);per.open(3, 3);per.open(3, 1);
-        StdOut.println(per.isFull(3, 1));
+        System.out.println(per.isFull(3, 1));
     }
 }
