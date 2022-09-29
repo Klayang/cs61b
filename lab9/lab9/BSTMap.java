@@ -1,5 +1,6 @@
 package lab9;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -18,10 +19,16 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         /* Children of this Node. */
         private Node left;
         private Node right;
+        private Node parent;
 
         private Node(K k, V v) {
             key = k;
             value = v;
+        }
+        private Node(K k, V v, Node parent) {
+            key = k;
+            value = v;
+            this.parent = parent;
         }
     }
 
@@ -91,7 +98,20 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        Set<K> res = new HashSet<>();
+        keySetHelper(res, root);
+        return res;
+    }
+
+    /**
+     * helper function for keySet(), basically traverse the tree
+     * @param set
+     */
+    private void keySetHelper(Set<K> set, Node n) {
+        if (n == null) return;
+        set.add(n.key);
+        keySetHelper(set, n.left);
+        keySetHelper(set, n.right);
     }
 
     /** Removes KEY from the tree if present
@@ -100,7 +120,25 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        Node nodeToRemove = getNode(key, root);
+        if (nodeToRemove == null) return null;
+        else if (isLeaf(nodeToRemove)) return null;
+        return null;
+    }
+
+    private Node getNode(K key, Node n) {
+        if (n == null) return null;
+        if (key.compareTo(n.key) < 0) return getNode(key, n.left);
+        else if (key.compareTo(n.key) > 0) return getNode(key, n.right);
+        else return n;
+    }
+
+    private boolean isLeaf(Node n) {
+        return n.left == null && n.right == null;
+    }
+
+    private void removeLeaf(Node n) {
+
     }
 
     /** Removes the key-value entry for the specified key only if it is
