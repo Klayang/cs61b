@@ -25,11 +25,6 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             key = k;
             value = v;
         }
-        private Node(K k, V v, Node parent) {
-            key = k;
-            value = v;
-            this.parent = parent;
-        }
     }
 
     private Node root;  /* Root node of the tree. */
@@ -73,8 +68,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             size++;
             return new Node(key, value);
         }
-        if (key.compareTo(p.key) < 0) p.left = putHelper(key, value, p.left);
-        else if (key.compareTo(p.key) > 0) p.right = putHelper(key, value, p.right);
+        if (key.compareTo(p.key) < 0) {
+            p.left = putHelper(key, value, p.left);
+            p.left.parent = p;
+        }
+        else if (key.compareTo(p.key) > 0) {
+            p.right = putHelper(key, value, p.right);
+            p.right.parent = p;
+        }
         else return p;
         return p;
     }
@@ -122,8 +123,25 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     public V remove(K key) {
         Node nodeToRemove = getNode(key, root);
         if (nodeToRemove == null) return null;
-        else if (isLeaf(nodeToRemove)) return null;
-        return null;
+        size--;
+        return removeNode(nodeToRemove);
+    }
+
+    private V removeNode(Node nodeToRemove) {
+        if (nodeToRemove == null) return null;
+        else if (isLeaf(nodeToRemove)) {
+            removeLeaf(nodeToRemove);
+            return nodeToRemove.value;
+        }
+        else if (hasOneChild(nodeToRemove)) {
+            removeSingleParent(nodeToRemove);
+            return nodeToRemove.value;
+        }
+        else {
+            Node closestLeft = getRightMostNode(nodeToRemove.left);
+            exchangeNode(nodeToRemove, closestLeft);
+            return removeNode(closestLeft);
+        }
     }
 
     private Node getNode(K key, Node n) {
@@ -137,8 +155,46 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         return n.left == null && n.right == null;
     }
 
-    private void removeLeaf(Node n) {
+    /**
+     * Check whether a node has only left child or right child
+     * @param n
+     * @return
+     */
+    private boolean hasOneChild(Node n) {
+        return (n.left != null && n.right == null) || (n.left == null && n.right != null);
+    }
 
+    private void removeLeaf(Node n) {
+        if (n.parent == null) root = null;
+        else if (n.parent.left == n) n.parent.left = null;
+        else n.parent.right = null;
+    }
+
+    private void removeSingleParent(Node n) {
+        if (n.left == null) {
+            if (n.parent == null) root = root.right;
+            else if (n.parent.left == n) n.parent.left = n.right;
+            else n.parent.right = n.right;
+        }
+        else {
+            if (n.parent == null) root = root.left;
+            else if (n.parent.left == n) n.parent.left = n.left;
+            else n.parent.right = n.left;
+        }
+    }
+
+    private Node getRightMostNode(Node n) {
+        if (n == null || n.right == null) return n;
+        else return getRightMostNode(n.right);
+    }
+
+    private void exchangeNode(Node n1, Node n2) {
+        K tempKey = n1.key;
+        V tempValue = n1.value;
+        n1.key = n2.key;
+        n1.value = n2.value;
+        n2.key = tempKey;
+        n2.value = tempValue;
     }
 
     /** Removes the key-value entry for the specified key only if it is
@@ -147,7 +203,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      **/
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        Node node = getNode(key, root);
+        if (node == null || value != node.value) return null;
+        size--;
+        return removeNode(node);
     }
 
     @Override
