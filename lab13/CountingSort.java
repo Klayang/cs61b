@@ -66,6 +66,7 @@ public class CountingSort {
      * @param arr int array that will be sorted
      */
     public static int[] betterCountingSort(int[] arr) {
+        if (arr.length == 0) return new int[0];
         int max = arr[0], min = arr[0];
         for (int i: arr) {
             max = max < i ? i : max;
