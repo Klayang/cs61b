@@ -17,6 +17,7 @@ public class RadixSort {
      */
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
+        if (asciis.length == 0) return new String[0];
         int maxLength = asciis[0].length();
         for (String str: asciis)
             maxLength = maxLength > str.length() ? maxLength : str.length();
