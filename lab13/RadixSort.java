@@ -22,24 +22,10 @@ public class RadixSort {
         for (String str: asciis)
             maxLength = maxLength > str.length() ? maxLength : str.length();
         String[] res = new String[asciis.length];
-        for (int i = 0; i < asciis.length; ++i) {
-            String origin = asciis[i];
-            String current = origin + "";
-            for (int j = 0; j < maxLength - origin.length(); ++j) {
-                char zero = 0;
-                current += zero;
-            }
-            res[i] = current;
-        }
+        for (int i = 0; i < asciis.length; ++i)
+            res[i] = asciis[i];
         for (int i = maxLength - 1; i >= 0; --i)
             sortHelperLSD(res, i);
-        for (int i = 0; i < res.length; ++i) {
-            String curr = res[i];
-            int last = 0;
-            while (last < maxLength && curr.charAt(last) != 0)
-                last++;
-            res[i] = curr.substring(0, last);
-        }
         return res;
     }
 
@@ -52,14 +38,16 @@ public class RadixSort {
     private static void sortHelperLSD(String[] asciis, int index) {
         int[] count = new int[257];
         for (int i = 0; i < asciis.length; ++i) {
-            int num = asciis[i].charAt(index);
+            int num = 0;
+            if (index < asciis[i].length()) num = asciis[i].charAt(index);
             count[num + 1]++;
         }
         for (int i = 1; i < count.length; ++i)
             count[i] += count[i - 1];
         String[] temp = new String[asciis.length];
         for (int i = 0; i < asciis.length; ++i) {
-            int item = asciis[i].charAt(index);
+            int item = 0;
+            if (index < asciis[i].length()) item = asciis[i].charAt(index);
             int place = count[item];
             temp[place] = asciis[i];
             count[item] += 1;
