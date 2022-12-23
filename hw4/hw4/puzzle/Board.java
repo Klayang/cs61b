@@ -11,8 +11,10 @@ public class Board implements WorldState{
     private int hamming = -1;
     private int manhattan = -1;
     private int xOfZero, yOfZero;
+    private Set<WorldState> neighborSet;
     public Board(int[][] tiles) {
         this.N = tiles.length;
+        neighborSet = null;
         this.tiles = new int[tiles.length][tiles[0].length];
         for (int i = 0; i < tiles.length; ++i)
             for (int j = 0; j < tiles[0].length; ++j) {
@@ -31,32 +33,33 @@ public class Board implements WorldState{
     }
 
     public Iterable<WorldState> neighbors() {
+        if (neighborSet != null) return neighborSet;
+        neighborSet = new HashSet<>();
         int[][] newTiles = new int[N][N];
         for (int i = 0; i < N; ++i)
             for (int j = 0; j < N; ++j)
                 newTiles[i][j] = tiles[i][j];
-        Set<WorldState> res = new HashSet<>();
         if (xOfZero > 0) {
             swap(xOfZero, yOfZero, xOfZero - 1, yOfZero, newTiles);
-            res.add(new Board(newTiles));
+            neighborSet.add(new Board(newTiles));
             swap(xOfZero, yOfZero, xOfZero - 1, yOfZero, newTiles);
         }
         if (xOfZero < N - 1) {
             swap(xOfZero, yOfZero, xOfZero + 1, yOfZero, newTiles);
-            res.add(new Board(newTiles));
+            neighborSet.add(new Board(newTiles));
             swap(xOfZero, yOfZero, xOfZero + 1, yOfZero, newTiles);
         }
         if (yOfZero > 0) {
             swap(xOfZero, yOfZero - 1, xOfZero, yOfZero, newTiles);
-            res.add(new Board(newTiles));
+            neighborSet.add(new Board(newTiles));
             swap(xOfZero, yOfZero - 1, xOfZero, yOfZero, newTiles);
         }
         if (yOfZero < N - 1) {
             swap(xOfZero, yOfZero, xOfZero, yOfZero + 1, newTiles);
-            res.add(new Board(newTiles));
+            neighborSet.add(new Board(newTiles));
             swap(xOfZero, yOfZero, xOfZero, yOfZero + 1, newTiles);
         }
-        return res;
+        return neighborSet;
     }
 
     private void swap(int x1, int y1, int x2, int y2, int[][] array) {
@@ -114,6 +117,14 @@ public class Board implements WorldState{
         }
         s.append("\n");
         return s.toString();
+    }
+    @Override
+    public int hashCode() {
+        int res = 0;
+        for (int i = 0; i < N; ++i)
+            for (int j = 0; j < N; ++j)
+                res += (i * N + j) * tiles[i][j];
+        return res;
     }
 
 }
