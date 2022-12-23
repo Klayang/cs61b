@@ -8,9 +8,9 @@ import java.util.List;
 
 
 public class Solver {
-    MinPQ<Node> pq;
-    int moves;
-    List<WorldState> sequence;
+    private MinPQ<Node> pq;
+    private int moves;
+    private List<WorldState> sequence;
     public Solver(WorldState initial) {
         pq = new MinPQ<>();
         Node root = new Node(initial, null, 0);
