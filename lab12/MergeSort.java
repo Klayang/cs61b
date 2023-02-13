@@ -1,6 +1,13 @@
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 
 public class MergeSort {
+    public static void main(String[] args) {
+        Queue<Integer> items = new Queue<>();
+        items.enqueue(5); items.enqueue(4); items.enqueue(3); items.enqueue(2); items.enqueue(1);
+        Queue<Integer> res = mergeSort(items);
+        while (!res.isEmpty()) System.out.println(res.dequeue());
+    }
     /**
      * Removes and returns the smallest item that is in q1 or q2.
      *
@@ -35,7 +42,13 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> result = new Queue<>();
+        for (Item item: items) {
+            Queue<Item> itemQueue = new Queue<>();
+            itemQueue.enqueue(item);
+            result.enqueue(itemQueue);
+        }
+        return result;
     }
 
     /**
@@ -54,13 +67,28 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         // Your code here!
-        return null;
+        Queue<Item> result = new Queue<>();
+        while ((!q1.isEmpty()) || (!q2.isEmpty()))
+            result.enqueue(getMin(q1, q2));
+        return result;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
         // Your code here!
-        return items;
+        Queue<Queue<Item>> queues = makeSingleItemQueues(items);
+        Queue<Queue<Item>> currentQueues = new Queue<>();
+        while (queues.size() > 1) {
+            while (queues.size() > 1) {
+                Queue<Item> items1 = queues.dequeue(), items2 = queues.dequeue();
+                Queue<Item> sortedItems = mergeSortedQueues(items1, items2);
+                currentQueues.enqueue(sortedItems);
+            }
+            if (!queues.isEmpty()) currentQueues.enqueue(queues.dequeue());
+            queues = currentQueues;
+            currentQueues = new Queue<>();
+        }
+        return queues.dequeue();
     }
 }

@@ -1,6 +1,12 @@
 import edu.princeton.cs.algs4.Queue;
 
 public class QuickSort {
+    public static void main(String[] args) {
+        Queue<Integer> items = new Queue<>();
+        items.enqueue(5); items.enqueue(4); items.enqueue(3); items.enqueue(2); items.enqueue(1);
+        Queue<Integer> res = quickSort(items);
+        while (!res.isEmpty()) System.out.println(res.dequeue());
+    }
     /**
      * Returns a new queue that contains the given queues catenated together.
      *
@@ -48,12 +54,26 @@ public class QuickSort {
             Queue<Item> unsorted, Item pivot,
             Queue<Item> less, Queue<Item> equal, Queue<Item> greater) {
         // Your code here!
+        while (!unsorted.isEmpty()) {
+            Item item = unsorted.dequeue();
+            if (item.compareTo(pivot) < 0) less.enqueue(item);
+            else if (item.compareTo(pivot) > 0) greater.enqueue(item);
+            else equal.enqueue(item);
+        }
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> quickSort(
             Queue<Item> items) {
         // Your code here!
+        if (items.size() <= 1) return items;
+        Item pivot = getRandomItem(items);
+        Queue<Item> less = new Queue<>(), greater = new Queue<>(), equal = new Queue<>();
+        partition(items, pivot, less, equal, greater);
+        quickSort(less); quickSort(greater);
+        while (!less.isEmpty()) items.enqueue(less.dequeue());
+        while (!equal.isEmpty()) items.enqueue(equal.dequeue());
+        while (!greater.isEmpty()) items.enqueue(greater.dequeue());
         return items;
     }
 }
